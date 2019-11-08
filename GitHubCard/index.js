@@ -3,6 +3,51 @@
            https://api.github.com/users/<your name>
 */
 
+const gitCard = (responseData) => {
+  // create DOM elements
+  const newCard = document.createElement('div');
+  const userPic = document.createElement('img');
+  const name = document.createElement('h1');
+  const userName = document.createElement('h1');
+  const bio = document.createElement('p');
+
+  // populate text/img from response data
+  userPic.src = responseData.avatar_url;
+  name.textContent = responseData.name;
+  userName.textContent = responseData.login;
+  bio.textContent = responseData.bio;
+  
+  // assign classes
+  userPic.classList.add('card');
+  name.classList.add('card', 'name');
+  userName.classList.add('card', 'username');
+  bio.classList.add('card');
+
+  // parent child relationship
+  newCard.appendChild(userPic);
+  newCard.appendChild(name);
+  newCard.appendChild(userName);
+  newCard.appendChild(bio);
+
+  return newCard;
+
+}
+
+const entry = document.querySelector('.cards');
+
+axios
+  .get("https://api.github.com/users/b1zz3")
+  .then(response => {
+    console.log('res', response);
+    const gitData = response.data;
+    const makeCard = gitCard(gitData);
+    entry.appendChild(makeCard);
+  })
+  .catch(error => {
+    console.log('we got issues', error);
+  });
+
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
