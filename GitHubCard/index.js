@@ -21,12 +21,12 @@ const gitCard = (responseData) => {
   userPic.src = responseData.avatar_url;
   name.textContent = responseData.name;
   userName.textContent = responseData.login;
-  userLoc.textContent = 'Location: ' + responseData.location;
+  userLoc.textContent = `Location: ${responseData.location}`;
   userProf.textContent = 'Profile: ';
   profLink.textContent = responseData.html_url;
   profLink.href = responseData.html_url;
-  followers.textContent = 'Followers: ' + responseData.followers;
-  following.textContent = 'Following: ' + responseData.following;
+  followers.textContent = `Followers: ${responseData.followers}`;
+  following.textContent = `Following: ${responseData.following}`;
   bio.textContent = responseData.bio;
   
   // assign classes
@@ -49,7 +49,6 @@ const gitCard = (responseData) => {
 
   userProf.appendChild(profLink);
   
-
   return newCard;
 
 }
@@ -57,20 +56,36 @@ const gitCard = (responseData) => {
 // select div to insert new cards
 const entry = document.querySelector('.cards');
 
-// pull data from github api
-axios
-  .get("https://api.github.com/users/b1zz3")
-  .then(response => {
-    console.log(response);
-    const gitData = response.data;
-    const makeCard = gitCard(gitData);
-    // append card in selected div
-    entry.appendChild(makeCard);
-  })
-  .catch(error => {
-    console.log('we got issues', error);
-  });
+// github users
+const followersArray = ['b1zz3', 'tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
 
+// pull data from github api
+followersArray.forEach(user => {
+  axios
+    .get(`https://api.github.com/users/${user}`)
+    .then(response => {
+      console.log(response);
+      const gitData = response.data;
+      const makeCard = gitCard(gitData);
+      // append card in selected div
+      entry.appendChild(makeCard);
+    })
+    .catch(error => {
+      console.log('we got issues', error);
+    });
+});
+
+  // .get("https://api.github.com/users/b1zz3")
+  // .then(response => {
+  //   console.log(response);
+  //   const gitData = response.data;
+  //   const makeCard = gitCard(gitData);
+  //   // append card in selected div
+  //   entry.appendChild(makeCard);
+  // })
+  // .catch(error => {
+  //   console.log('we got issues', error);
+  // });
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -113,7 +128,7 @@ axios
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 
 
